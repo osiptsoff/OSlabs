@@ -6,7 +6,7 @@
 #include <fileapi.h>
 
 using std::cout;
-using std::cin;
+using std::wcin;
 
 /*
 	printDriveInfo(LPTSTR) receives unicode path to drive root
@@ -66,7 +66,7 @@ void printDrivesList() {
 	int position = 0;
 	DWORD drives = GetLogicalDrives();
 
-	char choice, desiredDisk;
+	wchar_t choice, desiredDisk;
 	wchar_t path[] = L"A:\\";
 
 	// get all drive names from DWORD drives by bit shifting
@@ -82,11 +82,12 @@ void printDrivesList() {
 		 << "Type 'y' for 'yes', any other key for 'no': ";
 
 	// print info about drive if required
-	cin >> choice;
-	std::cin.ignore(INT_MAX, '\n');
-	while (choice == 'y') {
+	wcin >> choice;
+	wcin.ignore(INT_MAX, '\n');
+	while (towupper(choice) == 'Y') {
 		cout << "Type the drive you want to learn about ('D' for example): ";
-		cin >> desiredDisk;
+		wcin >> desiredDisk;
+		desiredDisk = towupper(desiredDisk);
 		std::cin.ignore(INT_MAX, '\n');
 
 		if (desiredDisk >= 'A' && desiredDisk <= 'Z' && drives & (1 << (desiredDisk - 'A'))) {
@@ -96,7 +97,7 @@ void printDrivesList() {
 
 		cout << "\nDo you want to get more specific info about one more of drives?\n"
 			<< "Type 'y' for 'yes', any other key for 'no': ";
-		cin >> choice;
-		std::cin.ignore(INT_MAX, '\n');
+		wcin >> choice;
+		wcin.ignore(INT_MAX, '\n');
 	}
 }

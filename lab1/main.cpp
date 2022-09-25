@@ -37,17 +37,18 @@ int main()
         getFileAttributes
     };
     
-    while (option != 'g') {
+    while (option != 'G') {
         system("cls");
         help();
         
         cout << "Make your choice and press enter: ";
         cin >> option;
+        option = toupper(option);
         std::cin.ignore(INT_MAX, '\n');
 
-        if (option >= 'a' && option <= 'g') {
-            if (option != 'g')
-                funcs[option - 'a']();
+        if (option >= 'A' && option <= 'G') {
+            if (option != 'G')
+                funcs[option - 'A']();
         }
         else cout << "\nWrong choice.\n";
 
