@@ -2,6 +2,9 @@
 
 #include <iostream>
 
+#include <windows.h>
+#include <fileapi.h>
+
 // ADD documentation
 void createNewFile() {
 	std::cout << "\nPlaceholder for createNewFile()\n";

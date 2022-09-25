@@ -1,8 +1,5 @@
 #include <iostream>
 
-#include <windows.h>
-#include <fileapi.h>
-
 #include "drivehandler.h"
 #include "filehandler.h"
 #include "folderhandler.h"
