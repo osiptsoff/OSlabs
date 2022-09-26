@@ -20,6 +20,7 @@ void printDriveInfo(LPTSTR rootPath) {
 	wchar_t volName[volNameMaxLength], fileSystemName[fileSystemNameLength];
 	DWORD sectorPerCluster, bytesPerSector, numOfFreeClusters, totalNumOfClusters, maxComponentLength, serialNumber;
 
+	// drive type
 	driveType = GetDriveType(rootPath);
 	switch (driveType) {
 	case 0 :
@@ -44,13 +45,14 @@ void printDriveInfo(LPTSTR rootPath) {
 		cout << "\nSomething unexpected...\n";
 	}
 
+	// names
 	GetVolumeInformationW(rootPath, volName, volNameMaxLength, &serialNumber, &maxComponentLength, NULL, fileSystemName, fileSystemNameLength);
 	std::wcout << "Drive name: " << volName
 		<< "\nSerial number: " << serialNumber
 		<< "\nMax file name length: " << maxComponentLength
 		<< "\nFile system: " << fileSystemName;
 
-
+	// space
 	GetDiskFreeSpace(rootPath, &sectorPerCluster, &bytesPerSector, &numOfFreeClusters, &totalNumOfClusters);
 	cout << "\nTotal amount of clusters: " << totalNumOfClusters
 		<< "\nAmount of free clusters: " << numOfFreeClusters
@@ -59,8 +61,8 @@ void printDriveInfo(LPTSTR rootPath) {
 }
 
 /*
-	printDrivesList() prints names all of drives that can be found in this device
-	and offers to get more specific info about one of them
+	printDrivesList() prints names of all of drives that can be found in this device
+	and offers to get more specific info about them
 */
 void printDrivesList() {
 	int position = 0;

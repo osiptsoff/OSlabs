@@ -144,6 +144,7 @@
   <ItemGroup>
     <ClInclude Include="drivehandler.h" />
     <ClInclude Include="filehandler.h" />
+    <ClInclude Include="filepropshandler.h" />
     <ClInclude Include="folderhandler.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

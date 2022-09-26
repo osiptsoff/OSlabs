@@ -3,6 +3,7 @@
 #include "drivehandler.h"
 #include "filehandler.h"
 #include "folderhandler.h"
+#include "filepropshandler.h"
 
 using std::cout;
 using std::cin;
@@ -17,8 +18,9 @@ void help() {
         << "type 'c' to start removing folder,\n"
         << "type 'd' to start creating new file,\n"
         << "type 'e' to start moving file to another path,\n"
-        << "type 'f' to get information of specified file attributes,\n"
-        << "type 'g' to close this application.\n\n"
+        << "type 'f' to start copying file to another path,\n"
+        << "type 'g' to get information of specified file attributes and change them if required,\n"
+        << "type 'h' to close this application.\n\n"
         << "Options must be typed without quotes.\n" << endl;
 }
 
@@ -28,16 +30,17 @@ int main()
     char option = 'y';
 
     // array of all functions user can call from this level of interface
-    void (*funcs[6])() = {
+    void (*funcs[])() = {
         printDrivesList,
         makeFolder,
         removeFolder,
         createNewFile,
         moveFile,
-        getFileAttributes
+        copyFile,
+        processFileAttributes
     };
     
-    while (option != 'G') {
+    while (option != 'H') {
         system("cls");
         help();
         
@@ -46,8 +49,8 @@ int main()
         option = toupper(option);
         std::cin.ignore(INT_MAX, '\n');
 
-        if (option >= 'A' && option <= 'G') {
-            if (option != 'G')
+        if (option >= 'A' && option <= 'H') {
+            if (option != 'H')
                 funcs[option - 'A']();
         }
         else cout << "\nWrong choice.\n";

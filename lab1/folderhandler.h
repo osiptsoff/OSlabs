@@ -17,7 +17,7 @@ using std::wcin;
 */
 void makeFolder() {
 	wchar_t answer;
-	wchar_t path[255];
+	wchar_t path[MAX_PATH];
 
 	cout << "\nDo you really want to create new directory? 'y' for 'yes': ";
 	wcin >> answer;
@@ -25,12 +25,12 @@ void makeFolder() {
 
 	if (towupper(answer) == 'Y') {
 		cout << "Enter the full name of folder, max 255 symbols (D:\\Users\\Me\\NewFolder for example): ";
-		wcin.getline(path, 255, L'\n');
+		wcin.getline(path, MAX_PATH, L'\n');
 
 		if (CreateDirectory(path, NULL)) 
-			cout << "Directory succsessfully created.\n";
+			cout << "Directory succsessfully created." << std::endl;
 		else
-			cout << "Error happened. Probably you entered incorrect name.\n";
+			cout << "Error happened. Probably you entered incorrect name." << std::endl;
 	}
 }
 
@@ -43,7 +43,7 @@ void makeFolder() {
 */
 void removeFolder() {
 	wchar_t answer;
-	wchar_t path[255];
+	wchar_t path[MAX_PATH];
 
 	cout << "\nDo you really want to delete a directory? 'y' for 'yes': ";
 	wcin >> answer;
@@ -51,11 +51,11 @@ void removeFolder() {
 
 	if (towupper(answer) == 'Y') {
 		cout << "Enter the full name of folder, max 255 symbols (D:\\Users\\Me\\NewFolder for example): ";
-		wcin.getline(path, 255, L'\n');
+		wcin.getline(path, MAX_PATH, L'\n');
 
 		if (RemoveDirectory(path))
-			cout << "Directory succsessfully removed.\n";
+			cout << "Directory succsessfully removed." << std::endl;
 		else
-			cout << "Error happened. Probably you entered incorrect name or a folder was not empty.\n";
+			cout << "Error happened. Probably you entered incorrect name or a folder was not empty." << std::endl;
 	}
 }
