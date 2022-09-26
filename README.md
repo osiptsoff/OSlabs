@@ -1,2 +1,2 @@
 # OSlabs
-repo to keep labs made for OS cource
+repo to keep labs made for OS course
