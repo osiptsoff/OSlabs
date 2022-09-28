@@ -142,6 +142,7 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="asynchcopy.h" />
     <ClInclude Include="drivehandler.h" />
     <ClInclude Include="filehandler.h" />
     <ClInclude Include="filepropshandler.h" />

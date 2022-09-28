@@ -3,6 +3,7 @@
 #include "drivehandler.h"
 #include "filehandler.h"
 #include "folderhandler.h"
+#include "asynchcopy.h"
 #include "filepropshandler.h"
 
 using std::cout;
@@ -19,8 +20,9 @@ void help() {
         << "type 'd' to start creating new file,\n"
         << "type 'e' to start moving file to another path,\n"
         << "type 'f' to start copying file to another path,\n"
-        << "type 'g' to get information of specified file attributes and change them if required,\n"
-        << "type 'h' to close this application.\n\n"
+        << "type 'g' to start copying file asyncronously (1.2)\n"
+        << "type 'h' to get information of specified file attributes and change them if required,\n"
+        << "type 'i' to close this application.\n\n"
         << "Options must be typed without quotes.\n" << endl;
 }
 
@@ -37,10 +39,11 @@ int main()
         createNewFile,
         moveFile,
         copyFile,
+        copyFileAsynch,
         processFileAttributes
     };
     
-    while (option != 'H') {
+    while (option != 'I') {
         system("cls");
         help();
         
@@ -49,8 +52,8 @@ int main()
         option = toupper(option);
         std::cin.ignore(INT_MAX, '\n');
 
-        if (option >= 'A' && option <= 'H') {
-            if (option != 'H')
+        if (option >= 'A' && option <= 'I') {
+            if (option != 'I')
                 funcs[option - 'A']();
         }
         else cout << "\nWrong choice.\n";

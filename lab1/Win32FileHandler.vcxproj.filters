@@ -32,5 +32,8 @@
     <ClInclude Include="filepropshandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="asynchcopy.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
