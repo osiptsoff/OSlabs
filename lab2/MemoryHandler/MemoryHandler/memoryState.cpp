@@ -8,7 +8,7 @@ using std::cout;
 using std::wcin;
 
 void memoryState() {
-	PMEMORY_BASIC_INFORMATION memInfo;
+	MEMORY_BASIC_INFORMATION memInfo;
 	PVOID address = nullptr;
 	wchar_t answer;
 
@@ -29,31 +29,24 @@ void memoryState() {
 	}
 
 	// get required info
-	memInfo = new MEMORY_BASIC_INFORMATION();
-	VirtualQuery(address, memInfo, sizeof(*memInfo));
+	VirtualQuery(address, &memInfo, sizeof(memInfo));
 
 	// check for mistakes
-	switch (DWORD err = GetLastError()) {
-	case 0:
-		break;
-	case ERROR_INVALID_PARAMETER:
-		cout << "Failed to get info. Region is not available for this process (perhaps it was not allocated).\n";
-		SetLastError(0);
-		return;
-	default:
-		cout << "Failed to get info. Unpredicted mistake. Error " << err << ".\n";
+	if (GetLastError() != 0) {
+		cout << "Failed to get info. Error " << GetLastError() << ".\n";
 		SetLastError(0);
 		return;
 	}
 
 	// print info
-	cout << "Base address of desired region: " << memInfo->BaseAddress << ";\n";
-	cout << "Base address of all memory allocated by this process: " << memInfo->AllocationBase << ";\n";
-	cout << "Word of region's protection option (hex): " << std::hex << memInfo->AllocationProtect << std::endl
+	cout << "Base address of desired region: " << memInfo.BaseAddress << ";\n";
+	cout << "Base address of all memory allocated by this process: " << memInfo.AllocationBase << ";\n";
+	cout << "Word of region's protection option it was allocated with (hex): " << std::hex << memInfo.AllocationProtect << std::endl
 		<< "\t(more details: https://learn.microsoft.com/en-us/windows/win32/memory/memory-protection-constants)"
 		<< ";\n";
-	cout << "Size of the region (dec): " << std::dec << memInfo->RegionSize << ";" << std::endl;
-	switch (memInfo->State) {
+	cout << "Word of region's current protection option (hex): " << std::hex << memInfo.Protect << std::endl;
+	cout << "Size of the region (dec): " << std::dec << memInfo.RegionSize << ";" << std::endl;
+	switch (memInfo.State) {
 		case MEM_COMMIT:
 			cout << "Physical storage was allocated for this region;\n";
 			break;
@@ -66,7 +59,7 @@ void memoryState() {
 		default:
 			cout << "Memory state: ERROR;\n";
 	}
-	switch (memInfo->Type) {
+	switch (memInfo.Type) {
 		case MEM_IMAGE:
 			cout << "Memory pages within the region are mapped into the view of an image section;\n";
 			break;
@@ -80,6 +73,22 @@ void memoryState() {
 			cout << "Memory type: ERROR;\n";
 	}
 
-	// free used memory
-	delete memInfo;
+	// ask if region listing is required
+	cout << "Do you want to see the content of this region? ";
+	wcin >> answer;
+	wcin.ignore(INT_MAX, '\n');
+	if (towupper(answer) != 'Y')
+		return;
+
+	// check if reading is allowed
+	// 0x66 is a word containing all protection flags that allow reading
+	if (!(0x66 & memInfo.AllocationProtect) || memInfo.State != MEM_COMMIT) {
+		cout << "Reading of this region is not allowed.\n";
+		return;
+	}
+
+	// show region content
+	cout << "Region content:\n";
+		for (SIZE_T i = 0; i < memInfo.RegionSize; ++i)
+			cout << *((byte*)memInfo.BaseAddress + i) << " ";
 }
