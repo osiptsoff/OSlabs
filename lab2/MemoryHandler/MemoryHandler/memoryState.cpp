@@ -88,7 +88,10 @@ void memoryState() {
 	}
 
 	// show region content
+	unsigned numericView;
 	cout << "Region content:\n";
-		for (SIZE_T i = 0; i < memInfo.RegionSize; ++i)
-			cout << *((byte*)memInfo.BaseAddress + i) << " ";
+	for (SIZE_T i = 0; i < memInfo.RegionSize; ++i) {
+		numericView = *((byte*)memInfo.BaseAddress + i);
+		cout << numericView << " ";
+	}
 }

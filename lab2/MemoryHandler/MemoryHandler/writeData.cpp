@@ -59,13 +59,18 @@ void writeData() {
 	}
 
 	// write data
+	unsigned numericView;
 	byte* data = (byte*)address;
 	cout << "Type " << desiredSize << " bytes (0 to 255), one by one: ";
-	for (SIZE_T i = 0; i < desiredSize; ++i)
-		std::cin >> *(data++);
+	for (SIZE_T i = 0; i < desiredSize; ++i) {
+		std::cin >> numericView;
+		*(data++) = numericView;
+	}
 
 	// show typed info
 	cout << "\nYou have entered: ";
-	for (SIZE_T i = 0; i < desiredSize; ++i)
-		cout << *((byte*)address + i) << " ";
+	for (SIZE_T i = 0; i < desiredSize; ++i) {
+		numericView = *((byte*)address + i);
+		cout << numericView << " ";
+	}
 }
