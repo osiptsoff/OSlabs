@@ -82,7 +82,7 @@ void memoryState() {
 
 	// check if reading is allowed
 	// 0x66 is a word containing all protection flags that allow reading
-	if (!(0x66 & memInfo.AllocationProtect) || memInfo.State != MEM_COMMIT) {
+	if (!(0x66 & memInfo.Protect) || memInfo.State != MEM_COMMIT) {
 		cout << "Reading of this region is not allowed.\n";
 		return;
 	}
