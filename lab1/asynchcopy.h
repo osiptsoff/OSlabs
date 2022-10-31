@@ -11,7 +11,28 @@ using std::wcin;
 // number of overlapped IO operations
 const int OverlappingOperationsAmount = 16;
 // multiplier used for scaling size of block transferred for one IO operation
-const int BlockSizeClustersMultiplier = 1;
+const int BlockSizeClustersMultiplier = 16;
+// boolean value used to define whether assigning filesize before writing is needed
+const bool setSizeBeforeWriting = true;
+
+bool enablePrivileges()
+{
+	HANDLE token;
+
+	struct {
+		DWORD count;
+		LUID_AND_ATTRIBUTES privilege[3];
+	} token_privileges;
+
+	token_privileges.count = 1;
+	token_privileges.privilege[0].Attributes = SE_PRIVILEGE_ENABLED;
+
+	if (!LookupPrivilegeValue(0, SE_MANAGE_VOLUME_NAME, &token_privileges.privilege[0].Luid)) return false;
+	if (!OpenProcessToken(GetCurrentProcess(), TOKEN_ADJUST_PRIVILEGES, &token)) return false;
+	if (!AdjustTokenPrivileges(token, 0, (PTOKEN_PRIVILEGES)&token_privileges, 0, 0, 0)) return false;
+
+	return true;
+}
 
 /*
 	this struct is designed for keeping sizes of files
@@ -107,6 +128,9 @@ void copyFileAsynch() {
 	cout << "Enter the name of copy, max 255 symbols (D:\\Users\\Me\\newfile.txt for example): ";
 	wcin.getline(dstPath, MAX_PATH, L'\n');
 
+	if (setSizeBeforeWriting)
+		enablePrivileges();
+
 	// open files
 	src = CreateFile(srcPath,
 		FILE_GENERIC_READ,
@@ -127,11 +151,31 @@ void copyFileAsynch() {
 	if (src == INVALID_HANDLE_VALUE || dst == INVALID_HANDLE_VALUE) {
 		cout << "Original file was not opened or copy was not created.\n"
 			<< "Check if paths are correct, original exists and copy does not." << std::endl;
+		CloseHandle(src);
+		CloseHandle(dst);
+		SetLastError(0);
 		return;
 	}
 
 	// determine the size
 	filesize.lesser = GetFileSize(src, &filesize.higher);
+	// set the destination filesize equal to source filesize if required
+	if (setSizeBeforeWriting) {
+		LARGE_INTEGER liFilesize, liZero;
+		liFilesize.QuadPart = filesize.total + 1;
+		liZero.QuadPart = 0;
+
+		if (!(SetFilePointerEx(dst, liFilesize, NULL, 0) &&
+				SetEndOfFile(dst) && 
+				SetFilePointerEx(dst, liZero, NULL, 0) && 
+				SetFileValidData(dst, filesize.total) ) ) {
+			cout << "Failed to set destination filesize. Error " << GetLastError() << " .\n";
+			SetLastError(0);
+			CloseHandle(src);
+			CloseHandle(dst);
+			return;
+		}
+	}
 
 	// determine the clustersize
 	srcRoot[0] = srcPath[0];
