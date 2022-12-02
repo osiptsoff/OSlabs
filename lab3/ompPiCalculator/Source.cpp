@@ -1,14 +1,12 @@
 #include <iostream>
 
 #include <windows.h>
-#include <fileapi.h>
-#include <synchapi.h>
 
 #include <omp.h.>
 
 const unsigned requiredPrecision = 100000000;
 const unsigned operationsPerBlock = 100;
-const unsigned threadsNumber = 8;
+const unsigned threadsNumber = 16;
 
 int main() {
 	double pi = 0;
