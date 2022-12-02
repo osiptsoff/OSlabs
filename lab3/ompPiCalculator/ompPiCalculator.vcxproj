@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{969a5c44-787d-47b6-8b94-d33c5e4c076f}</ProjectGuid>
-    <RootNamespace>NativePiCalculator</RootNamespace>
+    <ProjectGuid>{a09c90c6-7190-487a-b8fa-3e31f306b6bb}</ProjectGuid>
+    <RootNamespace>ompPiCalculator</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -88,7 +88,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalOptions>/openmp %(AdditionalOptions)</AdditionalOptions>
+      <OpenMPSupport>Yes</OpenMPSupport>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

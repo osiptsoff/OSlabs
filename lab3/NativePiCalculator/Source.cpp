@@ -6,11 +6,11 @@
 
 const unsigned requiredPrecision = 100000000;
 const unsigned operationsPerBlock = 100;
-const unsigned threadsNumber = 12;
+const unsigned threadsNumber = 16;
 
 /*
 	countPiByBlocks() counts operationsPerBlock digits of pi
-	at every area with begin at k * currentBlockStart
+	at every area with begin at k * threadsNumber * currentBlockStart
 
 	takes void* pointer at array of parameters:
 		piPart - output variable, address of calculated digits

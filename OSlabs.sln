@@ -25,6 +25,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lab3", "lab3", "{4FF9B1B8-D
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NativePiCalculator", "lab3\NativePiCalculator\NativePiCalculator.vcxproj", "{969A5C44-787D-47B6-8B94-D33C5E4C076F}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ompPiCalculator", "lab3\ompPiCalculator\ompPiCalculator.vcxproj", "{A09C90C6-7190-487A-B8FA-3E31F306B6BB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -73,6 +75,14 @@ Global
 		{969A5C44-787D-47B6-8B94-D33C5E4C076F}.Release|x64.Build.0 = Release|x64
 		{969A5C44-787D-47B6-8B94-D33C5E4C076F}.Release|x86.ActiveCfg = Release|Win32
 		{969A5C44-787D-47B6-8B94-D33C5E4C076F}.Release|x86.Build.0 = Release|Win32
+		{A09C90C6-7190-487A-B8FA-3E31F306B6BB}.Debug|x64.ActiveCfg = Debug|x64
+		{A09C90C6-7190-487A-B8FA-3E31F306B6BB}.Debug|x64.Build.0 = Debug|x64
+		{A09C90C6-7190-487A-B8FA-3E31F306B6BB}.Debug|x86.ActiveCfg = Debug|Win32
+		{A09C90C6-7190-487A-B8FA-3E31F306B6BB}.Debug|x86.Build.0 = Debug|Win32
+		{A09C90C6-7190-487A-B8FA-3E31F306B6BB}.Release|x64.ActiveCfg = Release|x64
+		{A09C90C6-7190-487A-B8FA-3E31F306B6BB}.Release|x64.Build.0 = Release|x64
+		{A09C90C6-7190-487A-B8FA-3E31F306B6BB}.Release|x86.ActiveCfg = Release|Win32
+		{A09C90C6-7190-487A-B8FA-3E31F306B6BB}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -86,6 +96,7 @@ Global
 		{29D8E464-FA04-4A62-B3F0-DB367EC16D36} = {56B10824-13D7-4AB7-A160-D44A7E95394C}
 		{26403D29-9D9C-4B99-B9C6-B21C5062A9F3} = {570E7552-7BE0-40B3-9B2C-9D5763C18718}
 		{969A5C44-787D-47B6-8B94-D33C5E4C076F} = {4FF9B1B8-D83E-4A03-A7D9-66CCBCA86CBA}
+		{A09C90C6-7190-487A-B8FA-3E31F306B6BB} = {4FF9B1B8-D83E-4A03-A7D9-66CCBCA86CBA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D475D100-E252-4DD6-AACE-D0CBC36ADBB2}
