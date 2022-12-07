@@ -6,7 +6,7 @@
 
 const unsigned requiredPrecision = 100000000;
 const unsigned operationsPerBlock = 100;
-const unsigned threadsNumber = 16;
+const unsigned threadsNumber = 12;
 
 int main() {
 	double pi = 0;
