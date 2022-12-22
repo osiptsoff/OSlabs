@@ -41,7 +41,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ClientServerImitator", "Cli
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Server", "lab4\ClientServerImitator\Server\Server.vcxproj", "{7AD80186-2A02-4F0B-808A-52F4199DB47C}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Client", "Client\Client.vcxproj", "{03D829FF-FD12-4000-94D9-ECE4F7F10313}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Client", "lab4\ClientServerImitator\Client\Client.vcxproj", "{03D829FF-FD12-4000-94D9-ECE4F7F10313}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
