@@ -6,61 +6,45 @@
 
 const unsigned requiredPrecision = 100000000;
 const unsigned operationsPerBlock = 100;
-const unsigned threadsNumber = 4;
+const unsigned threadsNumber = 16;
+
+LPCRITICAL_SECTION csBlocksCountGrow = new CRITICAL_SECTION;
+unsigned blocksDone = 0;
 
 /*
-	countPiByBlocks() counts operationsPerBlock digits of pi
-	at every area with begin at k * threadsNumber * currentBlockStart
-
-	takes void* pointer at array of parameters:
-		pi - output variable, address of variable where pi is stored
-		currentBlockStart - input variable, specifies location of blocks
-		mutex - mutex to synchronise on
+	countPiByBlocks() counts pi by blocks of operationsPerBlock size
 */ 
-void countPiByBlocks(void *parametersStart) {
-	// convert input variable to array of void* pointers in order to get params
-	void** parameters = (void**)parametersStart;
+void countPiByBlocks(void *parameter) {
+	int currentBlockStart;
+	double* piPart = (double*)parameter;
 
-	// get params from input array
-	double* pi = (double*)(parameters[0]);
-	unsigned currentBlockStart = *(unsigned*)(parameters[1]);
-	HANDLE mutex = *(HANDLE*)(parameters[2]);
+	EnterCriticalSection(csBlocksCountGrow);
+	currentBlockStart = blocksDone++ * operationsPerBlock;
+	LeaveCriticalSection(csBlocksCountGrow);
 
-	double accumulator = 0;
-	// while we are not put of pi bounds
+	// while we are not out of pi bounds
 	while (currentBlockStart < requiredPrecision) {
 		// calculate block using given formula
 		for (int i = currentBlockStart; i < currentBlockStart + operationsPerBlock; ++i) 
-			accumulator += 4 / (1 + ((i + 0.5) / requiredPrecision) * ((i + 0.5) / requiredPrecision));
+			*piPart += 4 / (1 + ((i + 0.5) / requiredPrecision) * ((i + 0.5) / requiredPrecision));
 		
 		// go to next block
-		currentBlockStart += threadsNumber * operationsPerBlock;
+		EnterCriticalSection(csBlocksCountGrow);
+		currentBlockStart = blocksDone++ * operationsPerBlock;
+		LeaveCriticalSection(csBlocksCountGrow);
 	}
-
-	WaitForSingleObject(mutex, INFINITE);
-	*pi += accumulator / requiredPrecision;
-	ReleaseMutex(mutex);
 }
 
 int main() {
 	int startTime, endTime;
-	
-	// each thread takes an array of parameters
-	//	(passed as void* to satisfy CreateThread() definition)
+	double pi = 0, piParts[threadsNumber];
+	HANDLE threads[threadsNumber];
 
-	HANDLE threads[threadsNumber], mutex;
-	void* params[threadsNumber][3];
-	int startingOperations[threadsNumber];
-
-	mutex = CreateMutex(NULL, FALSE, NULL);
-	double pi = 0;
+	InitializeCriticalSection(csBlocksCountGrow);
 
 	// assign input parameters, create threads
 	for (int i = 0; i < threadsNumber; ++i) {
-		startingOperations[i] = i * operationsPerBlock;
-		params[i][0] = &pi;
-		params[i][1] = startingOperations + i;
-		params[i][2] = &mutex;
+		piParts[i] = 0;
 
 		// threads are suspended because creating thread takes a time
 		// at which previously created threads will perform,
@@ -69,7 +53,7 @@ int main() {
 			NULL,
 			0,
 			(LPTHREAD_START_ROUTINE)countPiByBlocks,
-			params[i],
+			piParts + i,
 			CREATE_SUSPENDED,
 			NULL
 		);
@@ -82,14 +66,17 @@ int main() {
 	WaitForMultipleObjects(threadsNumber, threads, TRUE, INFINITE);
 	endTime = GetTickCount();
 
+	for (int i = 0; i < threadsNumber; ++i)
+		pi += piParts[i];
+	pi /= requiredPrecision;
 
 	std::cout.precision(requiredPrecision);
 	std::cout << pi << "\nTime taken: " << endTime - startTime << ".";
 
-	// close handles
+	DeleteCriticalSection(csBlocksCountGrow);
+
 	for (int i = 0; i < threadsNumber; ++i)
 		CloseHandle(threads[i]);
-	CloseHandle(mutex);
 
 	return 0;
 }
